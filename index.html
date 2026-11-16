@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Italiano per Rachel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: one phone-width column. Italian is always set in the serif, English in the
+     hyperlegible sans, so the two languages never blur. The prompt sits on a "quaderno"
+     page with a red margin line; answers stay in thumb reach below it. */
+  --paper:#f3f5fb;
+  --card:#ffffff;
+  --ink:#141d33;
+  --muted:#525d78;
+  --line:#d3d9e8;
+  --azzurro:#1b54c4;
+  --azzurro-ink:#ffffff;
+  --azzurro-soft:#e2eafb;
+  --margin:#d63c58;
+  --ok:#14724a;
+  --ok-soft:#dcf2e6;
+  --bad:#b02639;
+  --bad-soft:#fbe3e6;
+  --font-ui:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --font-it:"Newsreader",Georgia,"Times New Roman",serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0e1422;
+    --card:#171f33;
+    --ink:#eef1f9;
+    --muted:#a6b0c8;
+    --line:#2c3652;
+    --azzurro:#86abff;
+    --azzurro-ink:#0b1226;
+    --azzurro-soft:#1d2a4b;
+    --margin:#ff7189;
+    --ok:#62d59d;
+    --ok-soft:#133224;
+    --bad:#ff8c99;
+    --bad-soft:#3a1921;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0e1422;
+  --card:#171f33;
+  --ink:#eef1f9;
+  --muted:#a6b0c8;
+  --line:#2c3652;
+  --azzurro:#86abff;
+  --azzurro-ink:#0b1226;
+  --azzurro-soft:#1d2a4b;
+  --margin:#ff7189;
+  --ok:#62d59d;
+  --ok-soft:#133224;
+  --bad:#ff8c99;
+  --bad-soft:#3a1921;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{height:100%;margin:0}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:var(--font-ui);font-size:17px;line-height:1.45;
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
+}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus-visible{outline:3px solid var(--azzurro);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{text-wrap:balance}
+.it{font-family:var(--font-it)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+#app{height:100%;max-width:560px;margin:0 auto;display:flex;flex-direction:column}
+#top{flex:none;display:flex;align-items:center;gap:12px;padding:10px 18px;min-height:58px}
+#main{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:6px 18px 28px;display:flex;flex-direction:column;gap:20px}
+#main:focus{outline:none}
+#tabs{flex:none;display:grid;grid-template-columns:1fr 1fr;background:var(--card);border-top:1px solid var(--line)}
+.tab{border:0;background:none;min-height:56px;font-weight:700;font-size:16px;color:var(--muted);
+  border-top:3px solid transparent}
+.tab[aria-current="page"]{color:var(--azzurro);border-top-color:var(--azzurro)}
+
+.wordmark{font-family:var(--font-it);font-style:italic;font-size:22px;font-weight:500;letter-spacing:.005em}
+.wordmark b{font-weight:500;color:var(--azzurro)}
+
+/* Home */
+.hero{display:flex;flex-direction:column;gap:6px;padding-top:6px}
+.hero h1{font-family:var(--font-it);font-weight:500;font-size:40px;line-height:1.05;letter-spacing:-.01em}
+.hero p{color:var(--muted);max-width:34ch}
+.stack{display:flex;flex-direction:column;gap:10px}
+.primary{border:0;border-radius:14px;background:var(--azzurro);color:var(--azzurro-ink);
+  min-height:58px;padding:10px 18px;font-weight:700;font-size:18px;width:100%}
+.primary small{display:block;font-weight:400;font-size:14px;opacity:.9}
+.primary:disabled{opacity:.45;cursor:default}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:flex;align-items:baseline;gap:8px}
+.stat b{font-family:var(--font-it);font-size:28px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums;color:var(--azzurro)}
+.stat span{font-size:14px;color:var(--muted)}
+.secondary{border:1.5px solid var(--azzurro);border-radius:14px;background:var(--azzurro-soft);color:var(--ink);
+  min-height:52px;padding:8px 16px;font-weight:700;font-size:16px;width:100%}
+.section-title{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;text-align:left;width:100%;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-height:72px}
+.row-main{display:flex;flex-direction:column;gap:2px;min-width:0}
+.row-title{font-weight:700;font-size:18px}
+.row-desc{color:var(--muted);font-size:15px}
+.row-desc .it{font-size:17px;color:var(--ink)}
+.row-prog{display:flex;flex-direction:column;align-items:flex-end;gap:5px;min-width:78px}
+.row-num{font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted);white-space:nowrap}
+.meter{display:block;width:78px;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.meter-fill{display:block;height:100%;background:var(--ok);border-radius:3px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);border-radius:999px;background:var(--card);
+  min-height:44px;padding:6px 15px;font-family:var(--font-it);font-size:19px}
+.chip[aria-pressed="true"]{background:var(--azzurro);border-color:var(--azzurro);color:var(--azzurro-ink)}
+.linkrow{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+.textbtn{border:0;background:none;color:var(--azzurro);font-weight:700;font-size:15px;min-height:44px;padding:0 2px;
+  text-decoration:underline;text-underline-offset:3px}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;padding:4px}
+.seg button{border:0;background:none;border-radius:9px;min-height:44px;font-weight:700;font-size:16px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--azzurro);color:var(--azzurro-ink)}
+.fine{color:var(--muted);font-size:15px}
+
+/* Practice */
+.quit{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);
+  font-size:18px;line-height:1}
+.bar{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}
+.bar i{height:7px;border-radius:4px;background:var(--line)}
+.bar i.now{background:var(--azzurro)}
+.bar i.ok{background:var(--ok)}
+.bar i.bad{background:var(--bad)}
+.count{flex:none;font-variant-numeric:tabular-nums;font-size:15px;color:var(--muted);min-width:52px;text-align:right}
+
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:18px 18px 20px 36px;display:flex;flex-direction:column;gap:8px}
+.card::before{content:"";position:absolute;left:20px;top:0;bottom:0;width:2px;background:var(--margin);opacity:.6}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--azzurro)}
+.hint{color:var(--muted);font-size:16px}
+.hint .it{font-size:20px;font-style:italic;color:var(--ink)}
+.prompt{font-size:clamp(28px,8.6vw,36px);line-height:1.22;font-weight:500;overflow-wrap:anywhere;
+  display:block}
+.blank{display:inline-block;width:2.6em;height:.9em;border-bottom:3px solid var(--azzurro);vertical-align:baseline}
+.filled{color:var(--azzurro);border-bottom:3px solid var(--azzurro);font-weight:600}
+.gloss{color:var(--muted);font-size:17px}
+.gloss .it{font-size:22px;color:var(--ink);font-weight:500}
+.prompt.en{font-family:var(--font-ui);font-size:clamp(24px,7vw,30px);font-weight:700;line-height:1.2}
+.play{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;
+  background:var(--azzurro);color:var(--azzurro-ink);min-height:56px;padding:8px 22px 8px 18px;font-weight:700;font-size:18px}
+.play svg{width:26px;height:26px}
+.buildline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:68px;padding:10px;
+  border:1.5px dashed var(--line);border-radius:14px;background:var(--card)}
+.buildline.ok{border-style:solid;border-color:var(--ok);background:var(--ok-soft)}
+.buildline.bad{border-style:solid;border-color:var(--bad);background:var(--bad-soft)}
+.bank{display:flex;flex-wrap:wrap;gap:8px}
+.tile{border:1.5px solid var(--line);border-radius:12px;background:var(--card);min-height:46px;padding:6px 14px;
+  font-family:var(--font-it);font-size:22px;font-weight:500}
+.tile:disabled{cursor:default;color:var(--ink);opacity:1}
+.tile.used{opacity:.25}
+.promptrow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts.arts{grid-template-columns:repeat(4,1fr)}
+.opt{border:1.5px solid var(--line);border-radius:14px;background:var(--card);
+  min-height:60px;padding:8px 10px;font-family:var(--font-it);font-size:24px;font-weight:500;line-height:1.1;
+  overflow-wrap:anywhere}
+.opt:disabled{cursor:default;color:var(--ink);opacity:1}
+.opt.is-correct{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.is-correct::before{content:"\2713\00a0";font-family:var(--font-ui);font-size:.75em}
+.opt.is-wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.opt.is-wrong::before{content:"\2715\00a0";font-family:var(--font-ui);font-size:.7em}
+.opt.is-dim{color:var(--muted);opacity:.55}
+.opt.en{font-family:var(--font-ui);font-size:18px;font-weight:400;line-height:1.25}
+.opt.long{font-size:20px}
+
+.typeform{display:flex;flex-direction:column;gap:10px}
+.typeform input{width:100%;min-height:60px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);
+  padding:8px 16px;font-family:var(--font-it);font-size:26px}
+.typeform input:focus{outline:3px solid var(--azzurro);outline-offset:1px}
+.typeform input.ok{border-color:var(--ok);background:var(--ok-soft);color:var(--ok);opacity:1;-webkit-text-fill-color:var(--ok)}
+.typeform input.bad{border-color:var(--bad);background:var(--bad-soft);color:var(--bad);opacity:1;-webkit-text-fill-color:var(--bad)}
+.accents{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.accents button{border:1px solid var(--line);border-radius:10px;background:var(--card);min-height:46px;
+  font-family:var(--font-it);font-size:22px}
+
+.fb{border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;border:1px solid transparent}
+.fb.ok{background:var(--ok-soft);border-color:var(--ok)}
+.fb.bad{background:var(--bad-soft);border-color:var(--bad)}
+.fb-head{font-weight:700;font-size:18px}
+.fb.ok .fb-head{color:var(--ok)}
+.fb.bad .fb-head{color:var(--bad)}
+.fb-head .it{font-size:21px;font-weight:600}
+.fb-head .fb-en{font-weight:400;font-size:15px}
+.fb p{font-size:16px}
+.fb .it{font-size:19px}
+.fb strong.it{font-weight:600}
+
+.speak{display:none;flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+  background:var(--card);color:var(--azzurro);align-items:center;justify-content:center;padding:0}
+.speak svg{width:22px;height:22px;display:block}
+.can-speak .speak{display:inline-flex}
+
+/* Results */
+.score{font-family:var(--font-it);font-size:64px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.score small{font-size:28px;color:var(--muted)}
+.cheer{font-family:var(--font-it);font-size:30px;font-weight:500;line-height:1.1}
+.misses{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.misses li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px 10px 14px;
+  display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center}
+.misses .it{font-size:21px;font-weight:500}
+.misses .en{color:var(--muted);font-size:15px;grid-column:1}
+.misses .speak{grid-row:1 / span 2;grid-column:2}
+
+/* Reference */
+.ref h2{font-family:var(--font-it);font-weight:500;font-size:28px;line-height:1.15}
+.ref{display:flex;flex-direction:column;gap:14px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child th,tr:last-child td{border-bottom:0}
+thead th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+tbody th{font-weight:400;font-size:15px;color:var(--muted)}
+td.it,td .it{font-size:20px}
+td.it b,td .it b{font-weight:600;color:var(--azzurro)}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px}
+summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:10px;padding:13px 16px;min-height:52px}
+summary::-webkit-details-marker{display:none}
+summary .it{font-size:23px;font-weight:500}
+summary .en{color:var(--muted);font-size:15px;flex:1;min-width:0}
+summary .tag{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+summary::after{content:"+";font-size:22px;line-height:1;color:var(--azzurro);align-self:center}
+details[open] summary::after{content:"\2212"}
+.forms{display:grid;grid-template-columns:auto 1fr auto;gap:4px 14px;align-items:center;padding:0 12px 6px 16px}
+.forms .pr{color:var(--muted);font-family:var(--font-it);font-style:italic;font-size:18px;white-space:nowrap}
+.forms .fm{font-family:var(--font-it);font-size:22px;font-weight:500}
+.forms .fm small{display:block;font-family:var(--font-ui);font-size:13px;font-weight:400;color:var(--muted)}
+.forms .ph{width:44px;height:44px}
+.tip{padding:8px 16px 14px;color:var(--muted);font-size:15px}
+.sounds{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.sounds li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 12px 12px 16px;
+  display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center}
+.sounds .rule{font-size:16px}
+.sounds .rule b{font-family:var(--font-it);font-size:21px;font-weight:600;color:var(--azzurro)}
+.sounds .ex{font-family:var(--font-it);font-size:20px;grid-column:1}
+.sounds .ex span{font-family:var(--font-ui);font-size:14px;color:var(--muted)}
+.sounds .speak{grid-row:1 / span 2;grid-column:2}
+
+@media (max-width:359px){
+  #main{padding-left:16px;padding-right:16px}
+  .opt{font-size:21px}
+  .hero h1{font-size:34px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .opt,.chip,.seg button{transition:background-color .12s ease,border-color .12s ease}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header id="top"></header>
+  <main id="main" tabindex="-1"></main>
+  <nav id="tabs" aria-label="Sections">
+    <button class="tab" id="tab-home" type="button">Practice</button>
+    <button class="tab" id="tab-ref" type="button">Reference</button>
+  </nav>
+</div>
+
+<script>
+/* ============ Core: data and pure logic (no DOM) ============ */
+
+const PRON = [
+  {it:'io', en:'I'},
+  {it:'tu', en:'you'},
+  {it:'lui / lei', en:'he / she', say:'lui'},
+  {it:'noi', en:'we'},
+  {it:'voi', en:'you all'},
+  {it:'loro', en:'they'}
+];
+
+/* forms: io, tu, lui/lei, noi, voi, loro. eng: [base, third person], or all six for essere. */
+const VERBS = [
+  {id:'essere', en:'to be', forms:['sono','sei','è','siamo','siete','sono'],
+    eng:['am','are','is','are','are','are'],
+    tip:'Irregular. È (is) carries an accent. Without it, e means “and”.'},
+  {id:'avere', en:'to have', forms:['ho','hai','ha','abbiamo','avete','hanno'], eng:['have','has'],
+    tip:'Irregular. The h is silent: ho sounds like “oh”.'},
+  {id:'fare', en:'to do, to make', forms:['faccio','fai','fa','facciamo','fate','fanno'], eng:['do','does'],
+    tip:'Irregular. In faccio and facciamo, cc sounds like “ch” in “cheese”.'},
+  {id:'andare', en:'to go', forms:['vado','vai','va','andiamo','andate','vanno'], eng:['go','goes'],
+    tip:'Irregular. Only noi and voi keep the and- stem.'},
+  {id:'stare', en:'to stay, to be (feeling)', forms:['sto','stai','sta','stiamo','state','stanno'], eng:['stay','stays'],
+    tip:'Irregular. Used to say how you feel: sto bene (I am fine).'},
+  {id:'venire', en:'to come', forms:['vengo','vieni','viene','veniamo','venite','vengono'], eng:['come','comes'],
+    tip:'Irregular. Stress in vengono falls on the first syllable: VEN-go-no.'},
+  {id:'volere', en:'to want', forms:['voglio','vuoi','vuole','vogliamo','volete','vogliono'], eng:['want','wants'],
+    tip:'Irregular. The gli in voglio sounds like “lli” in “million”.'},
+  {id:'potere', en:'can, to be able to', forms:['posso','puoi','può','possiamo','potete','possono'], eng:['can','can'],
+    tip:'Irregular. Può is stressed on the ò.'},
+  {id:'dovere', en:'must, to have to', forms:['devo','devi','deve','dobbiamo','dovete','devono'], eng:['have to','has to'],
+    tip:'Irregular. Noi and voi switch to o: dobbiamo, dovete.'},
+  {id:'sapere', en:'to know', forms:['so','sai','sa','sappiamo','sapete','sanno'], eng:['know','knows'],
+    tip:'Irregular. Sapere followed by a verb means “to know how to”.'},
+  {id:'dire', en:'to say, to tell', forms:['dico','dici','dice','diciamo','dite','dicono'], eng:['say','says'],
+    tip:'Irregular. Dico has a hard c (k). Dici and dice have a soft c (ch).'},
+  {id:'dare', en:'to give', forms:['do','dai','dà','diamo','date','danno'], eng:['give','gives'],
+    tip:'Irregular. Dà (gives) carries an accent. Without it, da means “from”.'},
+  {id:'parlare', en:'to speak', reg:'are', forms:['parlo','parli','parla','parliamo','parlate','parlano'], eng:['speak','speaks'],
+    tip:'Regular -are verb: -o, -i, -a, -iamo, -ate, -ano. Stress in parlano: PAR-la-no.'},
+  {id:'ballare', en:'to dance', reg:'are', forms:['ballo','balli','balla','balliamo','ballate','ballano'], eng:['dance','dances'],
+    tip:'Regular -are verb, same endings as parlare.'},
+  {id:'mangiare', en:'to eat', reg:'are', forms:['mangio','mangi','mangia','mangiamo','mangiate','mangiano'], eng:['eat','eats'],
+    tip:'Regular -are verb. Mangi and mangiamo are written with a single i.'},
+  {id:'prendere', en:'to take', reg:'ere', forms:['prendo','prendi','prende','prendiamo','prendete','prendono'], eng:['take','takes'],
+    tip:'Regular -ere verb: -o, -i, -e, -iamo, -ete, -ono.'},
+  {id:'dormire', en:'to sleep', reg:'ire', forms:['dormo','dormi','dorme','dormiamo','dormite','dormono'], eng:['sleep','sleeps'],
+    tip:'Regular -ire verb: -o, -i, -e, -iamo, -ite, -ono.'},
+  {id:'capire', en:'to understand', reg:'isc', forms:['capisco','capisci','capisce','capiamo','capite','capiscono'], eng:['understand','understands'],
+    tip:'An -ire verb that adds -isc- in every form except noi and voi.'},
+  {id:'abitare', en:'to live (somewhere)', reg:'are', forms:['abito','abiti','abita','abitiamo','abitate','abitano'], eng:['live','lives'],
+    tip:'Regular -are verb. Stress in abito falls on the first syllable: A-bi-to.'},
+  {id:'lavorare', en:'to work', reg:'are', forms:['lavoro','lavori','lavora','lavoriamo','lavorate','lavorano'], eng:['work','works'],
+    tip:'Regular -are verb, same endings as parlare.'},
+  {id:'vedere', en:'to see', reg:'ere', forms:['vedo','vedi','vede','vediamo','vedete','vedono'], eng:['see','sees'],
+    tip:'Regular -ere verb, same endings as prendere.'},
+  {id:'bere', en:'to drink', forms:['bevo','bevi','beve','beviamo','bevete','bevono'], eng:['drink','drinks'],
+    tip:'Irregular. Every form is built on bev-, not on ber-.'},
+  {id:'uscire', en:'to go out', forms:['esco','esci','esce','usciamo','uscite','escono'], eng:['go out','goes out'],
+    tip:'Irregular. Only noi and voi keep the u: usciamo, uscite. The others start with esc-.'}
+];
+const STARTER = ['essere','avere','fare','andare','stare','parlare'];
+const ARTS = ['il','lo','la',"l'",'i','gli','le'];
+
+/* g: m/f, n: s (singular) / p (plural). sg: the singular, shown after plurals. */
+const NOUNS = [
+  {it:'libro', en:'the book', g:'m', n:'s', art:'il'},
+  {it:'ragazzo', en:'the boy', g:'m', n:'s', art:'il'},
+  {it:'cane', en:'the dog', g:'m', n:'s', art:'il', note:'Nouns ending in -e can be masculine or feminine. Cane is masculine.'},
+  {it:'caffè', en:'the coffee', g:'m', n:'s', art:'il'},
+  {it:'teatro', en:'the theater', g:'m', n:'s', art:'il'},
+  {it:'piede', en:'the foot', g:'m', n:'s', art:'il', note:'Piede ends in -e and is masculine.'},
+  {it:'treno', en:'the train', g:'m', n:'s', art:'il'},
+  {it:'giorno', en:'the day', g:'m', n:'s', art:'il'},
+  {it:'mare', en:'the sea', g:'m', n:'s', art:'il', note:'Mare ends in -e and is masculine.'},
+  {it:'pane', en:'the bread', g:'m', n:'s', art:'il', note:'Pane ends in -e and is masculine.'},
+  {it:'vino', en:'the wine', g:'m', n:'s', art:'il'},
+  {it:'corpo', en:'the body', g:'m', n:'s', art:'il'},
+  {it:'palco', en:'the stage', g:'m', n:'s', art:'il'},
+  {it:'telefono', en:'the phone', g:'m', n:'s', art:'il'},
+  {it:'gatto', en:'the cat', g:'m', n:'s', art:'il'},
+  {it:'lavoro', en:'the job', g:'m', n:'s', art:'il'},
+  {it:'nome', en:'the name', g:'m', n:'s', art:'il', note:'Nome ends in -e and is masculine.'},
+
+  {it:'studente', en:'the student', g:'m', n:'s', art:'lo'},
+  {it:'zaino', en:'the backpack', g:'m', n:'s', art:'lo'},
+  {it:'specchio', en:'the mirror', g:'m', n:'s', art:'lo'},
+  {it:'zucchero', en:'the sugar', g:'m', n:'s', art:'lo'},
+  {it:'spettacolo', en:'the show', g:'m', n:'s', art:'lo'},
+  {it:'yogurt', en:'the yogurt', g:'m', n:'s', art:'lo'},
+  {it:'sport', en:'the sport', g:'m', n:'s', art:'lo'},
+  {it:'studio', en:'the studio', g:'m', n:'s', art:'lo'},
+  {it:'zio', en:'the uncle', g:'m', n:'s', art:'lo'},
+  {it:'spazio', en:'the space', g:'m', n:'s', art:'lo'},
+
+  {it:'casa', en:'the house', g:'f', n:'s', art:'la'},
+  {it:'ragazza', en:'the girl', g:'f', n:'s', art:'la'},
+  {it:'scuola', en:'the school', g:'f', n:'s', art:'la', note:'Lo is only for masculine nouns. A feminine noun starting with s + consonant still takes la.'},
+  {it:'musica', en:'the music', g:'f', n:'s', art:'la'},
+  {it:'danza', en:'the dance', g:'f', n:'s', art:'la'},
+  {it:'gamba', en:'the leg', g:'f', n:'s', art:'la'},
+  {it:'mano', en:'the hand', g:'f', n:'s', art:'la', note:'An exception: mano ends in -o but is feminine.'},
+  {it:'sera', en:'the evening', g:'f', n:'s', art:'la'},
+  {it:'lezione', en:'the class, the lesson', g:'f', n:'s', art:'la', note:'Nouns ending in -zione are always feminine.'},
+  {it:'notte', en:'the night', g:'f', n:'s', art:'la', note:'Notte ends in -e and is feminine.'},
+  {it:'schiena', en:'the back (of the body)', g:'f', n:'s', art:'la', note:'Lo is only for masculine nouns. A feminine noun starting with s + consonant still takes la.'},
+  {it:'città', en:'the city', g:'f', n:'s', art:'la', note:'Nouns ending in -tà are feminine.'},
+  {it:'pizza', en:'the pizza', g:'f', n:'s', art:'la'},
+  {it:'chiave', en:'the key', g:'f', n:'s', art:'la', note:'Chiave ends in -e and is feminine.'},
+  {it:'stazione', en:'the station', g:'f', n:'s', art:'la', note:'Nouns ending in -zione are always feminine, so it is la, not lo.'},
+  {it:'spalla', en:'the shoulder', g:'f', n:'s', art:'la'},
+  {it:'testa', en:'the head', g:'f', n:'s', art:'la'},
+  {it:'sbarra', en:'the barre (ballet)', g:'f', n:'s', art:'la'},
+
+  {it:'amico', en:'the friend (male)', g:'m', n:'s', art:"l'"},
+  {it:'amica', en:'the friend (female)', g:'f', n:'s', art:"l'"},
+  {it:'acqua', en:'the water', g:'f', n:'s', art:"l'"},
+  {it:'ora', en:'the hour', g:'f', n:'s', art:"l'"},
+  {it:'italiano', en:'Italian (the language)', g:'m', n:'s', art:"l'"},
+  {it:'albero', en:'the tree', g:'m', n:'s', art:"l'"},
+  {it:'uomo', en:'the man', g:'m', n:'s', art:"l'"},
+  {it:'estate', en:'the summer', g:'f', n:'s', art:"l'"},
+  {it:'esercizio', en:'the exercise', g:'m', n:'s', art:"l'"},
+  {it:'isola', en:'the island', g:'f', n:'s', art:"l'"},
+  {it:'aereo', en:'the airplane', g:'m', n:'s', art:"l'"},
+  {it:'anno', en:'the year', g:'m', n:'s', art:"l'"},
+  {it:'idea', en:'the idea', g:'f', n:'s', art:"l'"},
+  {it:'occhio', en:'the eye', g:'m', n:'s', art:"l'"},
+
+  {it:'libri', en:'the books', g:'m', n:'p', art:'i', sg:'il libro'},
+  {it:'ragazzi', en:'the boys', g:'m', n:'p', art:'i', sg:'il ragazzo'},
+  {it:'cani', en:'the dogs', g:'m', n:'p', art:'i', sg:'il cane'},
+  {it:'piedi', en:'the feet', g:'m', n:'p', art:'i', sg:'il piede'},
+  {it:'giorni', en:'the days', g:'m', n:'p', art:'i', sg:'il giorno'},
+  {it:'treni', en:'the trains', g:'m', n:'p', art:'i', sg:'il treno'},
+  {it:'passi', en:'the steps', g:'m', n:'p', art:'i', sg:'il passo'},
+  {it:'gatti', en:'the cats', g:'m', n:'p', art:'i', sg:'il gatto'},
+  {it:'biglietti', en:'the tickets', g:'m', n:'p', art:'i', sg:'il biglietto'},
+  {it:'capelli', en:'the hair', g:'m', n:'p', art:'i', note:'Hair is plural in Italian: i capelli.'},
+
+  {it:'studenti', en:'the students', g:'m', n:'p', art:'gli', sg:'lo studente'},
+  {it:'amici', en:'the friends', g:'m', n:'p', art:'gli', sg:"l'amico"},
+  {it:'zaini', en:'the backpacks', g:'m', n:'p', art:'gli', sg:'lo zaino'},
+  {it:'spettacoli', en:'the shows', g:'m', n:'p', art:'gli', sg:'lo spettacolo'},
+  {it:'specchi', en:'the mirrors', g:'m', n:'p', art:'gli', sg:'lo specchio'},
+  {it:'alberi', en:'the trees', g:'m', n:'p', art:'gli', sg:"l'albero"},
+  {it:'uomini', en:'the men', g:'m', n:'p', art:'gli', sg:"l'uomo", note:'Irregular plural: uomo becomes uomini.'},
+  {it:'esercizi', en:'the exercises', g:'m', n:'p', art:'gli', sg:"l'esercizio"},
+  {it:'spaghetti', en:'the spaghetti', g:'m', n:'p', art:'gli'},
+  {it:'gnocchi', en:'the gnocchi', g:'m', n:'p', art:'gli', sg:'lo gnocco'},
+  {it:'occhi', en:'the eyes', g:'m', n:'p', art:'gli', sg:"l'occhio"},
+  {it:'anni', en:'the years', g:'m', n:'p', art:'gli', sg:"l'anno"},
+  {it:'zii', en:'the uncles', g:'m', n:'p', art:'gli', sg:'lo zio'},
+
+  {it:'case', en:'the houses', g:'f', n:'p', art:'le', sg:'la casa'},
+  {it:'ragazze', en:'the girls', g:'f', n:'p', art:'le', sg:'la ragazza'},
+  {it:'scuole', en:'the schools', g:'f', n:'p', art:'le', sg:'la scuola'},
+  {it:'amiche', en:'the friends (female)', g:'f', n:'p', art:'le', sg:"l'amica", note:'Le never shortens, even before a vowel.'},
+  {it:'gambe', en:'the legs', g:'f', n:'p', art:'le', sg:'la gamba'},
+  {it:'mani', en:'the hands', g:'f', n:'p', art:'le', sg:'la mano', note:'Irregular: la mano becomes le mani.'},
+  {it:'ore', en:'the hours', g:'f', n:'p', art:'le', sg:"l'ora", note:'Le never shortens, even before a vowel.'},
+  {it:'lezioni', en:'the classes, the lessons', g:'f', n:'p', art:'le', sg:'la lezione'},
+  {it:'scarpe', en:'the shoes', g:'f', n:'p', art:'le', sg:'la scarpa'},
+  {it:'notti', en:'the nights', g:'f', n:'p', art:'le', sg:'la notte'},
+  {it:'città', en:'the cities', g:'f', n:'p', art:'le', sg:'la città', note:'Nouns ending in an accented vowel do not change in the plural.'},
+  {it:'spalle', en:'the shoulders', g:'f', n:'p', art:'le', sg:'la spalla'},
+  {it:'chiavi', en:'the keys', g:'f', n:'p', art:'le', sg:'la chiave'},
+  {it:'punte', en:'the pointe shoes', g:'f', n:'p', art:'le', sg:'la punta'}
+];
+
+/* p: 0 io, 1 tu, 2 lui/lei, 3 noi, 4 voi, 5 loro. The blank is always the verb. */
+const SENTS = [
+  {v:'essere', p:0, it:'Io ___ americana.', en:'I am American.'},
+  {v:'essere', p:1, it:'Tu ___ italiano?', en:'Are you Italian?'},
+  {v:'essere', p:2, it:'Rachel ___ una ballerina.', en:'Rachel is a dancer.'},
+  {v:'essere', p:3, it:'Noi ___ a Mainz.', en:'We are in Mainz.'},
+  {v:'essere', p:4, it:'Voi ___ stanchi?', en:'Are you all tired?'},
+  {v:'essere', p:5, it:'Loro ___ amici.', en:'They are friends.'},
+
+  {v:'avere', p:0, it:'Io ___ fame.', en:'I am hungry.', note:'Italian says “I have hunger”: avere fame.'},
+  {v:'avere', p:1, it:'Tu ___ tempo oggi?', en:'Do you have time today?'},
+  {v:'avere', p:2, it:"Mia sorella ___ vent'anni.", en:'My sister is twenty years old.', note:'Age uses avere: “she has twenty years”.'},
+  {v:'avere', p:3, it:'Noi ___ una lezione alle nove.', en:'We have a class at nine.'},
+  {v:'avere', p:4, it:'Voi ___ un cane?', en:'Do you all have a dog?'},
+  {v:'avere', p:5, it:'Loro ___ una casa in Italia.', en:'They have a house in Italy.'},
+
+  {v:'fare', p:0, it:'Io ___ colazione alle otto.', en:'I have breakfast at eight.', note:'Fare colazione means to have breakfast (literally “to make breakfast”).'},
+  {v:'fare', p:1, it:'Tu che cosa ___ stasera?', en:'What are you doing tonight?'},
+  {v:'fare', p:2, it:'Lei ___ stretching ogni giorno.', en:'She stretches every day.'},
+  {v:'fare', p:3, it:'Noi ___ una passeggiata.', en:'We are taking a walk.', note:'Fare una passeggiata means to take a walk.'},
+  {v:'fare', p:4, it:'Voi ___ sport?', en:'Do you all play sports?'},
+  {v:'fare', p:5, it:'Loro ___ la spesa.', en:'They do the grocery shopping.'},
+
+  {v:'andare', p:0, it:'Io ___ in palestra.', en:'I go to the gym.'},
+  {v:'andare', p:1, it:'Tu ___ al lavoro in treno?', en:'Do you go to work by train?'},
+  {v:'andare', p:2, it:'Lui ___ a casa.', en:'He goes home.'},
+  {v:'andare', p:3, it:'Noi ___ in Italia a dicembre.', en:'We are going to Italy in December.'},
+  {v:'andare', p:4, it:'Voi ___ al cinema stasera?', en:'Are you all going to the movies tonight?'},
+  {v:'andare', p:5, it:'Loro ___ a teatro.', en:'They go to the theater.'},
+
+  {v:'stare', p:0, it:'Io ___ bene, grazie.', en:'I am fine, thanks.', note:'To say how you feel, Italian uses stare, not essere.'},
+  {v:'stare', p:1, it:'Tu come ___?', en:'How are you?'},
+  {v:'stare', p:3, it:'Noi ___ a casa stasera.', en:'We are staying home tonight.'},
+  {v:'stare', p:5, it:'Loro ___ bene insieme.', en:'They are good together.'},
+
+  {v:'venire', p:0, it:'Io ___ dagli Stati Uniti.', en:'I come from the United States.'},
+  {v:'venire', p:1, it:'Tu ___ con noi?', en:'Are you coming with us?'},
+  {v:'venire', p:2, it:'Lei ___ a cena stasera.', en:'She is coming to dinner tonight.'},
+  {v:'venire', p:3, it:'Noi ___ in macchina.', en:'We are coming by car.'},
+  {v:'venire', p:5, it:'Loro ___ domani.', en:'They are coming tomorrow.'},
+
+  {v:'volere', p:0, it:'Io ___ un caffè.', en:'I want a coffee.'},
+  {v:'volere', p:1, it:'Tu ___ ballare?', en:'Do you want to dance?'},
+  {v:'volere', p:2, it:'Lui ___ una pizza.', en:'He wants a pizza.'},
+  {v:'volere', p:3, it:"Noi ___ imparare l'italiano.", en:'We want to learn Italian.'},
+  {v:'volere', p:5, it:'Loro ___ andare al mare.', en:'They want to go to the beach.'},
+
+  {v:'potere', p:0, it:'Io non ___ venire oggi.', en:'I can’t come today.'},
+  {v:'potere', p:1, it:'Tu ___ ripetere, per favore?', en:'Can you repeat that, please?'},
+  {v:'potere', p:2, it:'Lei ___ fare la spaccata.', en:'She can do the splits.'},
+  {v:'potere', p:3, it:'Noi ___ parlare italiano.', en:'We can speak Italian.'},
+  {v:'potere', p:4, it:'Voi ___ aspettare un momento?', en:'Can you all wait a moment?'},
+
+  {v:'dovere', p:0, it:'Io ___ andare al lavoro.', en:'I have to go to work.'},
+  {v:'dovere', p:1, it:'Tu ___ dormire di più.', en:'You have to sleep more.'},
+  {v:'dovere', p:2, it:'Lui ___ lavorare domani.', en:'He has to work tomorrow.'},
+  {v:'dovere', p:3, it:'Noi ___ studiare.', en:'We have to study.'},
+  {v:'dovere', p:5, it:'Loro ___ prendere il treno.', en:'They have to take the train.'},
+
+  {v:'sapere', p:0, it:'Io non lo ___.', en:'I don’t know.'},
+  {v:'sapere', p:1, it:'Tu ___ ballare?', en:'Do you know how to dance?', note:'Sapere followed by a verb means to know how to do something.'},
+  {v:'sapere', p:2, it:'Lei ___ parlare tedesco.', en:'She knows how to speak German.'},
+  {v:'sapere', p:5, it:'Loro ___ la risposta.', en:'They know the answer.'},
+
+  {v:'dire', p:0, it:'Io ___ sempre la verità.', en:'I always tell the truth.'},
+  {v:'dire', p:1, it:'Tu che cosa ___?', en:'What are you saying?'},
+  {v:'dire', p:2, it:'Lei ___ di sì.', en:'She says yes.'},
+  {v:'dire', p:5, it:'Loro ___ di no.', en:'They say no.'},
+
+  {v:'dare', p:0, it:'Io ti ___ un bacio.', en:'I give you a kiss.'},
+  {v:'dare', p:2, it:'Lui mi ___ una mano.', en:'He gives me a hand.', note:'Dare una mano means to help, just like in English.'},
+  {v:'dare', p:3, it:'Noi ___ una festa sabato.', en:'We are throwing a party on Saturday.'},
+
+  {v:'parlare', p:0, it:"Io ___ inglese e un po' di italiano.", en:'I speak English and a little Italian.'},
+  {v:'parlare', p:1, it:'Tu ___ tedesco?', en:'Do you speak German?'},
+  {v:'parlare', p:4, it:'Voi ___ troppo in fretta!', en:'You all speak too fast!'},
+  {v:'parlare', p:5, it:'Loro ___ italiano a casa.', en:'They speak Italian at home.'},
+
+  {v:'ballare', p:0, it:'Io ___ ogni giorno.', en:'I dance every day.'},
+  {v:'ballare', p:2, it:'Lei ___ molto bene.', en:'She dances very well.'},
+  {v:'ballare', p:3, it:'Noi ___ insieme.', en:'We dance together.'},
+
+  {v:'mangiare', p:0, it:'Io ___ la pasta.', en:'I eat pasta.'},
+  {v:'mangiare', p:4, it:'Voi ___ la carne?', en:'Do you all eat meat?'},
+  {v:'mangiare', p:5, it:'Loro ___ alle otto.', en:'They eat at eight.'},
+
+  {v:'prendere', p:0, it:'Io ___ un cappuccino.', en:'I’ll have a cappuccino.', note:'Ordering uses prendere: “I take a cappuccino”.'},
+  {v:'prendere', p:2, it:'Lei ___ il treno alle sette.', en:'She takes the train at seven.'},
+  {v:'prendere', p:3, it:"Noi ___ l'autobus.", en:'We take the bus.'},
+
+  {v:'dormire', p:0, it:'Io ___ poco.', en:'I don’t sleep much.'},
+  {v:'dormire', p:1, it:'Tu ___ otto ore?', en:'Do you sleep eight hours?'},
+  {v:'dormire', p:2, it:'Il gatto ___ sul divano.', en:'The cat sleeps on the couch.'},
+
+  {v:'capire', p:0, it:'Io non ___.', en:'I don’t understand.'},
+  {v:'capire', p:1, it:"Tu ___ l'italiano?", en:'Do you understand Italian?'},
+  {v:'capire', p:3, it:"Noi ___ un po' di tedesco.", en:'We understand a little German.'},
+  {v:'capire', p:5, it:'Loro ___ tutto.', en:'They understand everything.'},
+
+  {v:'abitare', p:0, it:'Io ___ a Mainz.', en:'I live in Mainz.'},
+  {v:'abitare', p:1, it:'Tu dove ___?', en:'Where do you live?'},
+  {v:'abitare', p:5, it:'Loro ___ in Italia.', en:'They live in Italy.'},
+
+  {v:'lavorare', p:0, it:'Io ___ in una scuola di danza.', en:'I work in a dance school.'},
+  {v:'lavorare', p:2, it:'Lui ___ troppo.', en:'He works too much.'},
+  {v:'lavorare', p:4, it:'Voi ___ domani?', en:'Are you all working tomorrow?'},
+
+  {v:'vedere', p:0, it:'Io ___ un film stasera.', en:'I am watching a movie tonight.'},
+  {v:'vedere', p:1, it:'Tu ___ il mare?', en:'Do you see the sea?'},
+  {v:'vedere', p:3, it:'Noi ___ gli amici sabato.', en:'We are seeing our friends on Saturday.'},
+
+  {v:'bere', p:0, it:"Io ___ un bicchiere d'acqua.", en:'I drink a glass of water.'},
+  {v:'bere', p:2, it:'Lei ___ il tè.', en:'She drinks tea.'},
+  {v:'bere', p:5, it:'Loro ___ vino rosso.', en:'They drink red wine.'},
+
+  {v:'uscire', p:0, it:'Io ___ alle sei.', en:'I go out at six.'},
+  {v:'uscire', p:1, it:'Tu ___ stasera?', en:'Are you going out tonight?'},
+  {v:'uscire', p:3, it:'Noi ___ con gli amici.', en:'We go out with our friends.'}
+];
+
+/* Sentences with one natural word order, safe for the tile exercise. */
+const BUILD_OK = [
+  'Io ___ americana.', 'Tu ___ italiano?', 'Rachel ___ una ballerina.', 'Noi ___ a Mainz.', 'Voi ___ stanchi?', 'Loro ___ amici.',
+  'Io ___ fame.', "Mia sorella ___ vent'anni.", 'Voi ___ un cane?',
+  'Noi ___ una passeggiata.', 'Loro ___ la spesa.', 'Voi ___ sport?',
+  'Io ___ in palestra.', 'Lui ___ a casa.', 'Loro ___ a teatro.',
+  'Io ___ dagli Stati Uniti.', 'Tu ___ con noi?',
+  'Io ___ un caffè.', 'Tu ___ ballare?', 'Lui ___ una pizza.', "Noi ___ imparare l'italiano.", 'Loro ___ andare al mare.',
+  'Lei ___ fare la spaccata.', 'Noi ___ parlare italiano.', 'Voi ___ aspettare un momento?',
+  'Io ___ andare al lavoro.', 'Tu ___ dormire di più.', 'Noi ___ studiare.', 'Loro ___ prendere il treno.',
+  'Io non lo ___.', 'Lei ___ parlare tedesco.', 'Loro ___ la risposta.',
+  'Lei ___ di sì.', 'Loro ___ di no.',
+  'Io ti ___ un bacio.', 'Lui mi ___ una mano.',
+  'Tu ___ tedesco?', 'Lei ___ molto bene.',
+  'Io ___ la pasta.', 'Voi ___ la carne?',
+  'Io ___ un cappuccino.', "Noi ___ l'autobus.",
+  'Io non ___.', "Tu ___ l'italiano?", 'Loro ___ tutto.', "Noi ___ un po' di tedesco.",
+  'Tu ___ otto ore?',
+  'Io ___ a Mainz.', 'Loro ___ in Italia.', 'Lui ___ troppo.',
+  "Io ___ un bicchiere d'acqua.", 'Lei ___ il tè.', 'Loro ___ vino rosso.',
+  'Noi ___ con gli amici.', 'Tu ___ il mare?'
+];
+const SUBJECTS = ['io','tu','lui','lei','noi','voi','loro'];
+
+/* t: theme. Wrong choices always come from the same theme. */
+const VOCAB = [
+  {t:'hello', it:'ciao', en:'hi, bye'},
+  {t:'hello', it:'buongiorno', en:'good morning'},
+  {t:'hello', it:'buonasera', en:'good evening'},
+  {t:'hello', it:'buonanotte', en:'good night'},
+  {t:'hello', it:'arrivederci', en:'goodbye'},
+  {t:'hello', it:'a domani', en:'see you tomorrow'},
+  {t:'hello', it:'a dopo', en:'see you later'},
+  {t:'hello', it:'grazie', en:'thank you'},
+  {t:'hello', it:'prego', en:'you’re welcome'},
+  {t:'hello', it:'per favore', en:'please'},
+  {t:'hello', it:'scusa', en:'sorry, excuse me'},
+  {t:'hello', it:'piacere', en:'nice to meet you'},
+
+  {t:'phrase', it:'come stai?', en:'how are you?'},
+  {t:'phrase', it:'va bene', en:'okay, all right'},
+  {t:'phrase', it:'non lo so', en:'I don’t know'},
+  {t:'phrase', it:'mi chiamo Rachel', en:'my name is Rachel'},
+  {t:'phrase', it:'ti amo', en:'I love you'},
+  {t:'phrase', it:'mi piace', en:'I like it'},
+  {t:'phrase', it:'ho capito', en:'I get it, understood'},
+  {t:'phrase', it:'quanto costa?', en:'how much does it cost?'},
+  {t:'phrase', it:"dov'è il bagno?", en:'where is the bathroom?'},
+  {t:'phrase', it:'buon appetito', en:'enjoy your meal'},
+  {t:'phrase', it:"anch'io", en:'me too'},
+  {t:'phrase', it:'non capisco', en:'I don’t understand'},
+
+  {t:'ask', it:'chi', en:'who'},
+  {t:'ask', it:'che cosa', en:'what'},
+  {t:'ask', it:'dove', en:'where'},
+  {t:'ask', it:'quando', en:'when'},
+  {t:'ask', it:'perché', en:'why, because'},
+  {t:'ask', it:'come', en:'how'},
+  {t:'ask', it:'quanto', en:'how much'},
+
+  {t:'time', it:'oggi', en:'today'},
+  {t:'time', it:'domani', en:'tomorrow'},
+  {t:'time', it:'ieri', en:'yesterday'},
+  {t:'time', it:'adesso', en:'now'},
+  {t:'time', it:'dopo', en:'later, after'},
+  {t:'time', it:'sempre', en:'always'},
+  {t:'time', it:'mai', en:'never'},
+  {t:'time', it:'stasera', en:'tonight, this evening'},
+  {t:'time', it:'la mattina', en:'the morning'},
+  {t:'time', it:'la settimana', en:'the week'},
+
+  {t:'food', it:'il formaggio', en:'the cheese'},
+  {t:'food', it:'la frutta', en:'the fruit'},
+  {t:'food', it:'la verdura', en:'the vegetables'},
+  {t:'food', it:'il pesce', en:'the fish'},
+  {t:'food', it:'la colazione', en:'breakfast'},
+  {t:'food', it:'il pranzo', en:'lunch'},
+  {t:'food', it:'la cena', en:'dinner'},
+  {t:'food', it:'il bicchiere', en:'the glass'},
+  {t:'food', it:'il gelato', en:'the ice cream'},
+  {t:'food', it:'il tè', en:'the tea'},
+  {t:'food', it:'il latte', en:'the milk'},
+  {t:'food', it:"l'uovo", en:'the egg'},
+
+  {t:'dance', it:'il ginocchio', en:'the knee'},
+  {t:'dance', it:'il collo', en:'the neck'},
+  {t:'dance', it:'il braccio', en:'the arm'},
+  {t:'dance', it:'la caviglia', en:'the ankle'},
+  {t:'dance', it:"l'anca", en:'the hip'},
+  {t:'dance', it:'il salto', en:'the jump'},
+  {t:'dance', it:'la prova', en:'the rehearsal'},
+  {t:'dance', it:'il riscaldamento', en:'the warm-up'},
+  {t:'dance', it:'il pubblico', en:'the audience'},
+  {t:'dance', it:'la ballerina', en:'the dancer (female)'},
+
+  {t:'adj', it:'buono', en:'good'},
+  {t:'adj', it:'bello', en:'beautiful'},
+  {t:'adj', it:'grande', en:'big'},
+  {t:'adj', it:'piccolo', en:'small'},
+  {t:'adj', it:'stanco', en:'tired'},
+  {t:'adj', it:'felice', en:'happy'},
+  {t:'adj', it:'nuovo', en:'new'},
+  {t:'adj', it:'facile', en:'easy'},
+  {t:'adj', it:'difficile', en:'difficult'},
+  {t:'adj', it:'caldo', en:'hot'},
+  {t:'adj', it:'freddo', en:'cold'},
+  {t:'adj', it:'lento', en:'slow'},
+  {t:'adj', it:'veloce', en:'fast'},
+
+  {t:'people', it:'la mamma', en:'mom'},
+  {t:'people', it:'il papà', en:'dad'},
+  {t:'people', it:'la sorella', en:'the sister'},
+  {t:'people', it:'il fratello', en:'the brother'},
+  {t:'people', it:'la famiglia', en:'the family'},
+  {t:'people', it:"l'amore", en:'love'},
+
+  {t:'num', it:'uno', en:'one'},
+  {t:'num', it:'due', en:'two'},
+  {t:'num', it:'tre', en:'three'},
+  {t:'num', it:'quattro', en:'four'},
+  {t:'num', it:'cinque', en:'five'},
+  {t:'num', it:'sei', en:'six'},
+  {t:'num', it:'sette', en:'seven'},
+  {t:'num', it:'otto', en:'eight'},
+  {t:'num', it:'nove', en:'nine'},
+  {t:'num', it:'dieci', en:'ten'},
+
+  {t:'small', it:'e', en:'and'},
+  {t:'small', it:'ma', en:'but'},
+  {t:'small', it:'o', en:'or'},
+  {t:'small', it:'con', en:'with'},
+  {t:'small', it:'senza', en:'without'},
+  {t:'small', it:'molto', en:'very, a lot'},
+  {t:'small', it:'poco', en:'little, not much'},
+  {t:'small', it:'qui', en:'here'},
+  {t:'small', it:'lì', en:'there'},
+  {t:'small', it:'anche', en:'also'},
+  {t:'small', it:'ancora', en:'again, still'},
+  {t:'small', it:'forse', en:'maybe'}
+];
+const VOCAB_BY_IT = {};
+VOCAB.forEach(function(w){ VOCAB_BY_IT[w.it] = w; });
+
+const VERB_BY_ID = {};
+VERBS.forEach(function(v){ VERB_BY_ID[v.id] = v; });
+
+function startKind(word){
+  const w = word.toLowerCase();
+  if (/^[aeiouàèéìòù]/.test(w)) return 'vowel';
+  if (/^z/.test(w)) return 'z';
+  if (/^gn/.test(w)) return 'gn';
+  if (/^p[sn]/.test(w)) return 'ps';
+  if (/^[xy]/.test(w)) return 'y';
+  if (/^s[^aeiouàèéìòù]/.test(w)) return 's + consonant';
+  return 'consonant';
+}
+function articleFor(n){
+  const k = startKind(n.it);
+  if (n.g === 'f') {
+    if (n.n === 'p') return 'le';
+    return k === 'vowel' ? "l'" : 'la';
+  }
+  if (n.n === 'p') return k === 'consonant' ? 'i' : 'gli';
+  if (k === 'vowel') return "l'";
+  return k === 'consonant' ? 'il' : 'lo';
+}
+function whyArticle(n){
+  const k = startKind(n.it);
+  if (n.g === 'f') {
+    if (n.n === 'p') return 'Feminine plural: always le.';
+    return k === 'vowel' ? "Feminine, starts with a vowel: l'." : 'Feminine, starts with a consonant: la.';
+  }
+  if (n.n === 'p') {
+    if (k === 'consonant') return 'Masculine plural, starts with a consonant: i.';
+    return 'Masculine plural, starts with ' + (k === 'vowel' ? 'a vowel' : k) + ': gli.';
+  }
+  if (k === 'vowel') return "Masculine, starts with a vowel: l'.";
+  if (k === 'consonant') return 'Masculine, starts with a consonant: il.';
+  return 'Masculine, starts with ' + k + ': lo.';
+}
+function verbGloss(v, p){
+  const e = v.eng.length === 6 ? v.eng[p] : (p === 2 ? v.eng[1] : v.eng[0]);
+  return PRON[p].en + ' ' + e;
+}
+function nounId(n){ return 'a:' + n.it + ':' + n.n; }
+function sentId(s){ return 's:' + s.v + ':' + s.it; }
+
+const ALL_ITEMS = [];
+const ITEM_BY_ID = {};
+const NOUN_BY_ID = {};
+const SENT_BY_ID = {};
+VERBS.forEach(function(v){
+  for (let p = 0; p < 6; p++) ALL_ITEMS.push({id:'v:' + v.id + ':' + p, kind:'verb', v:v.id, p:p});
+});
+NOUNS.forEach(function(n){ const id = nounId(n); NOUN_BY_ID[id] = n; ALL_ITEMS.push({id:id, kind:'art'}); });
+SENTS.forEach(function(s){
+  const id = sentId(s); SENT_BY_ID[id] = s; ALL_ITEMS.push({id:id, kind:'sent', v:s.v});
+  if (BUILD_OK.indexOf(s.it) >= 0) ALL_ITEMS.push({id:'b:' + id, kind:'build', v:s.v, s:id});
+});
+VOCAB.forEach(function(w){
+  ALL_ITEMS.push({id:'w:' + w.it, kind:'word', w:w.it});
+  ALL_ITEMS.push({id:'l:' + w.it, kind:'listen', w:w.it});
+});
+ALL_ITEMS.forEach(function(it){ ITEM_BY_ID[it.id] = it; });
+
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function uniq(arr){ return arr.filter(function(x, i){ return arr.indexOf(x) === i; }); }
+function verbOptions(v, answer){
+  const others = uniq(v.forms.filter(function(f){ return f !== answer; }));
+  return shuffle([answer].concat(shuffle(others).slice(0, 3)));
+}
+function norm(s){
+  return String(s).toLowerCase().replace(/[’‘`´]/g, "'").replace(/[?!.,;:]/g, '').replace(/\s+/g, ' ').trim();
+}
+function strip(s){
+  return norm(s).normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+/* A question is plain JSON, so a round survives a page refresh from a republish. */
+function buildQuestion(item, opt){
+  if (item.kind === 'word' || item.kind === 'listen') {
+    const w = VOCAB_BY_IT[item.w];
+    const reverse = item.kind === 'word' && !!(opt && opt.reverse);
+    const others = shuffle(VOCAB.filter(function(x){ return x.t === w.t && x.it !== w.it && x.en !== w.en; })).slice(0, 3);
+    const answer = reverse ? w.en : w.it;
+    const none = {pre:'', post:''};
+    return {kind:item.kind, id:item.id, answer:answer, reverse:reverse,
+      options:shuffle([answer].concat(others.map(function(x){ return reverse ? x.en : x.it; }))),
+      inf:'', infEn:'', parts:none, done:none, en:w.en, show:reverse ? w.it : w.en,
+      tip:'', note:'', why:'', sg:'', full:w.it, say:w.it};
+  }
+  if (item.kind === 'build') {
+    const s = SENT_BY_ID[item.s], v = VERB_BY_ID[s.v], form = v.forms[s.p];
+    const full = s.it.replace('___', form);
+    const tokens = full.replace(/[.?!,]/g, '').split(' ').map(function(t, i){
+      return i === 0 && t !== 'Rachel' ? t.toLowerCase() : t;
+    });
+    const extra = shuffle(uniq(v.forms.filter(function(f){ return f !== form && tokens.indexOf(f) < 0; }))).slice(0, 2);
+    const none = {pre:'', post:''};
+    return {kind:'build', id:item.id, answer:tokens.join(' '),
+      alt:SUBJECTS.indexOf(tokens[0]) >= 0 && tokens.length > 2 ? tokens.slice(1).join(' ') : '',
+      options:[], tiles:shuffle(tokens.concat(extra)),
+      inf:'', infEn:'', parts:none, done:none, en:s.en,
+      tip:'', note:s.note || '', why:'', sg:'', full:full, say:full};
+  }
+  if (item.kind === 'verb') {
+    const v = VERB_BY_ID[item.v], p = item.p, answer = v.forms[p], pr = PRON[p];
+    const parts = {pre: pr.it + ' ', post: ''};
+    return {kind:'verb', id:item.id, answer:answer, options:verbOptions(v, answer),
+      inf:v.id, infEn:v.en, parts:parts, done:parts, en:verbGloss(v, p),
+      tip:v.tip, note:'', why:'', sg:'',
+      full:pr.it + ' ' + answer, say:(pr.say || pr.it) + ' ' + answer};
+  }
+  if (item.kind === 'art') {
+    const n = NOUN_BY_ID[item.id];
+    const tight = n.art === "l'";
+    const full = n.art + (tight ? '' : ' ') + n.it;
+    return {kind:'art', id:item.id, answer:n.art, options:ARTS.slice(),
+      inf:'', infEn:'', parts:{pre:'', post:' ' + n.it}, done:{pre:'', post:(tight ? '' : ' ') + n.it},
+      en:n.en, tip:'', note:n.note || '', why:whyArticle(n), sg:n.sg || '',
+      full:full, say:full};
+  }
+  const s = SENT_BY_ID[item.id], v = VERB_BY_ID[s.v], answer = v.forms[s.p];
+  const cut = s.it.split('___');
+  const parts = {pre: cut[0], post: cut[1]};
+  const full = cut[0] + answer + cut[1];
+  return {kind:'sent', id:item.id, answer:answer, options:verbOptions(v, answer),
+    inf:v.id, infEn:v.en, parts:parts, done:parts, en:s.en,
+    tip:v.tip, note:s.note || '', why:'', sg:'',
+    full:full, say:full};
+}
+</script>
+
+<script>
+/* ============ App ============ */
+(function(){
+'use strict';
+
+const KEY = 'italiano-per-rachel-v1';
+const ROUND = 10;
+const $main = document.getElementById('main');
+const $top = document.getElementById('top');
+const $tabs = document.getElementById('tabs');
+const $tabHome = document.getElementById('tab-home');
+const $tabRef = document.getElementById('tab-ref');
+
+const store = {boxes:{}, verbs:STARTER.slice(), typing:false, days:{last:'', streak:0, today:0}};
+const state = {tab:'home', refTab:'articles', session:null};
+
+function load(){
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (!d || typeof d !== 'object') return;
+    if (d.boxes && typeof d.boxes === 'object') {
+      Object.keys(d.boxes).forEach(function(id){
+        const b = d.boxes[id];
+        if (ITEM_BY_ID[id] && typeof b === 'number' && b >= 0 && b <= 3) store.boxes[id] = Math.floor(b);
+      });
+    }
+    if (Array.isArray(d.verbs)) {
+      const ok = d.verbs.filter(function(id){ return !!VERB_BY_ID[id]; });
+      if (ok.length) store.verbs = uniq(ok);
+    }
+    store.typing = !!d.typing;
+    const dd = d.days;
+    if (dd && typeof dd === 'object' && typeof dd.last === 'string' && typeof dd.streak === 'number' && typeof dd.today === 'number') {
+      store.days = {last:dd.last, streak:Math.max(0, Math.floor(dd.streak)), today:Math.max(0, Math.floor(dd.today))};
+    }
+  } catch (e) { /* storage unavailable: run without saved progress */ }
+}
+function save(){
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* ignore */ }
+}
+
+/* ---------- days practiced ---------- */
+function dayStr(d){
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function yesterdayStr(){ const y = new Date(); y.setDate(y.getDate() - 1); return dayStr(y); }
+function bumpDay(){
+  const t = dayStr(new Date()), d = store.days;
+  if (d.last === t) d.today++;
+  else { d.streak = d.last === yesterdayStr() ? d.streak + 1 : 1; d.today = 1; d.last = t; }
+}
+function dayStats(){
+  const d = store.days;
+  if (d.last === dayStr(new Date())) return {streak:d.streak, today:d.today};
+  if (d.last === yesterdayStr()) return {streak:d.streak, today:0};
+  return {streak:0, today:0};
+}
+
+/* ---------- small DOM helper ---------- */
+function h(tag, attrs){
+  const el = document.createElement(tag);
+  if (attrs) {
+    Object.keys(attrs).forEach(function(k){
+      const v = attrs[k];
+      if (v === null || v === undefined || v === false) return;
+      if (k === 'class') el.className = v;
+      else if (k === 'style') Object.assign(el.style, v);
+      else if (k.slice(0, 2) === 'on') el.addEventListener(k.slice(2), v);
+      else if (v === true) el.setAttribute(k, '');
+      else el.setAttribute(k, v);
+    });
+  }
+  for (let i = 2; i < arguments.length; i++) append(el, arguments[i]);
+  return el;
+}
+function append(el, kid){
+  if (kid === null || kid === undefined || kid === false) return;
+  if (Array.isArray(kid)) { kid.forEach(function(k){ append(el, k); }); return; }
+  el.appendChild(kid.nodeType ? kid : document.createTextNode(String(kid)));
+}
+function it(text, cls){ return h('span', {class:'it' + (cls ? ' ' + cls : ''), lang:'it'}, text); }
+
+/* ---------- speech (only when the device has an Italian voice) ---------- */
+let itVoice = null;
+let booted = false;
+function refreshVoices(){
+  let found = null;
+  try {
+    const vs = window.speechSynthesis.getVoices() || [];
+    for (let i = 0; i < vs.length; i++) {
+      if (/^it([-_]|$)/i.test(vs[i].lang || '')) {
+        if (!found || /it[-_]IT/i.test(vs[i].lang)) found = vs[i];
+        if (/it[-_]IT/i.test(vs[i].lang) && vs[i].localService) break;
+      }
+    }
+  } catch (e) { found = null; }
+  const changed = !!found !== !!itVoice;
+  itVoice = found;
+  document.documentElement.classList.toggle('can-speak', !!itVoice);
+  if (changed && booted) render(true);
+}
+function speak(text){
+  if (!itVoice) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.voice = itVoice;
+    u.lang = (itVoice.lang || 'it-IT').replace('_', '-');
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  } catch (e) { /* ignore */ }
+}
+const PLAY_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg>';
+const SPEAKER_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+function speakBtn(text){
+  const b = h('button', {class:'speak', type:'button', 'aria-label':'Listen: ' + text,
+    onclick:function(e){ e.stopPropagation(); speak(text); }});
+  b.innerHTML = SPEAKER_SVG;
+  return b;
+}
+
+/* ---------- pools and scheduling ---------- */
+function pool(kind){
+  if (kind === 'listen' && !itVoice) return [];
+  return ALL_ITEMS.filter(function(x){
+    return x.kind === kind && (x.v === undefined || store.verbs.indexOf(x.v) >= 0);
+  });
+}
+function activeItems(){
+  return pool('verb').concat(pool('art'), pool('sent'), pool('word'), pool('build'), pool('listen'));
+}
+function reviewIds(){
+  return activeItems().filter(function(x){ return store.boxes[x.id] === 0; }).map(function(x){ return x.id; });
+}
+function weight(id){
+  const b = store.boxes[id];
+  if (b === undefined) return 3;
+  return [6, 3, 1.5, 0.6][b] || 1;
+}
+function pick(items, recent){
+  let c = items.filter(function(x){ return recent.indexOf(x.id) < 0; });
+  if (!c.length) c = items;
+  let total = 0;
+  const w = c.map(function(x){ const k = weight(x.id); total += k; return k; });
+  let r = Math.random() * total;
+  for (let i = 0; i < c.length; i++) { r -= w[i]; if (r <= 0) return c[i]; }
+  return c[c.length - 1];
+}
+
+/* ---------- session ---------- */
+function startSession(mode){
+  const s = {mode:mode, idx:0, total:ROUND, score:0, log:[], misses:[], recent:[], requeue:[],
+    queue:null, q:null, result:null, done:false, typing:store.typing};
+  if (mode === 'review') {
+    const ids = reviewIds();
+    if (!ids.length) return;
+    s.queue = shuffle(ids).slice(0, ROUND);
+    s.total = s.queue.length;
+  }
+  state.session = s;
+  loadQuestion();
+  render();
+  autoPlay();
+}
+function autoPlay(){
+  const s = state.session;
+  if (s && !s.done && s.q && s.q.kind === 'listen') speak(s.q.say);
+}
+function nextItem(s){
+  if (s.queue) return ITEM_BY_ID[s.queue[s.idx]];
+  for (let i = 0; i < s.requeue.length; i++) {
+    if (s.requeue[i].due <= s.idx) {
+      const r = s.requeue.splice(i, 1)[0];
+      if (ITEM_BY_ID[r.id]) return ITEM_BY_ID[r.id];
+    }
+  }
+  let kind = s.mode;
+  if (kind === 'mix') {
+    const table = [['verb', 25], ['art', 18], ['sent', 18], ['word', 20], ['build', 12]];
+    if (itVoice) table.push(['listen', 10]);
+    let total = 0;
+    table.forEach(function(t){ total += t[1]; });
+    let r = Math.random() * total;
+    kind = table[0][0];
+    for (let i = 0; i < table.length; i++) { r -= table[i][1]; if (r <= 0) { kind = table[i][0]; break; } }
+  }
+  let items = pool(kind);
+  if (!items.length) items = pool('art');
+  return pick(items, s.recent);
+}
+function loadQuestion(){
+  const s = state.session;
+  const item = nextItem(s);
+  s.q = buildQuestion(item, {reverse:!s.typing && Math.random() < 0.4});
+  s.result = null;
+  s.pick = [];
+  s.recent.push(item.id);
+  if (s.recent.length > 4) s.recent.shift();
+}
+function submit(value){
+  const s = state.session;
+  if (!s || s.result || s.done) return;
+  const q = s.q;
+  let correct = false, slip = false;
+  if (norm(value) === norm(q.answer)) correct = true;
+  else if (q.alt && norm(value) === norm(q.alt)) correct = true;
+  else if (strip(value) === strip(q.answer)) { correct = true; slip = true; }
+  bumpDay();
+  s.result = {correct:correct, slip:slip, given:String(value).trim()};
+  s.log.push(correct);
+  const b = store.boxes[q.id];
+  store.boxes[q.id] = correct ? Math.min(3, (b === undefined ? 0 : b) + 1) : 0;
+  if (correct) s.score++;
+  else {
+    s.misses.push({full:q.full, en:q.en, say:q.say});
+    if (!s.queue && s.idx + 3 < s.total) s.requeue.push({id:q.id, due:s.idx + 3});
+  }
+  save();
+  render(true);
+  const next = document.getElementById('next-btn');
+  if (next) {
+    try { next.focus({preventScroll:true}); } catch (e) { next.focus(); }
+    next.scrollIntoView({block:'nearest'});
+  }
+}
+function advance(){
+  const s = state.session;
+  if (!s || !s.result) return;
+  s.idx++;
+  if (s.idx >= s.total) { s.done = true; s.q = null; s.result = null; }
+  else loadQuestion();
+  render();
+  autoPlay();
+}
+function quit(){
+  state.session = null;
+  state.tab = 'home';
+  try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+  render();
+}
+
+/* ---------- views ---------- */
+function viewHome(){
+  const review = reviewIds().length;
+  const nVerbs = store.verbs.length;
+  const days = dayStats();
+
+  function modeRow(mode, title, desc){
+    const p = pool(mode), n = p.length;
+    const k = p.filter(function(x){ return (store.boxes[x.id] || 0) >= 2; }).length;
+    return h('button', {class:'row', type:'button', onclick:function(){ startSession(mode); }},
+      h('span', {class:'row-main'},
+        h('span', {class:'row-title'}, title),
+        h('span', {class:'row-desc'}, desc)),
+      h('span', {class:'row-prog'},
+        h('span', {class:'row-num'}, k + ' / ' + n + ' learned'),
+        h('span', {class:'meter'},
+          h('span', {class:'meter-fill', style:{width:(n ? Math.round(100 * k / n) : 0) + '%'}}))));
+  }
+
+  const chips = VERBS.map(function(v){
+    const on = store.verbs.indexOf(v.id) >= 0;
+    return h('button', {class:'chip', type:'button', lang:'it', 'aria-pressed':on ? 'true' : 'false',
+      onclick:function(){
+        if (on) {
+          if (store.verbs.length === 1) return;
+          store.verbs = store.verbs.filter(function(id){ return id !== v.id; });
+        } else store.verbs = store.verbs.concat([v.id]);
+        save(); render(true);
+      }}, v.id);
+  });
+
+  function segBtn(label, typing){
+    return h('button', {type:'button', 'aria-pressed':store.typing === typing ? 'true' : 'false',
+      onclick:function(){ store.typing = typing; save(); render(true); }}, label);
+  }
+
+  return [
+    h('section', {class:'hero'},
+      h('h1', {lang:'it'}, 'Ciao, Rachel.'),
+      h('p', null, 'Ten questions a round. Anything you miss comes back until it sticks.')),
+    h('div', {class:'stats'},
+      h('div', {class:'stat'}, h('b', null, String(days.streak)), h('span', null, days.streak === 1 ? 'day in a row' : 'days in a row')),
+      h('div', {class:'stat'}, h('b', null, String(days.today)), h('span', null, days.today === 1 ? 'answer today' : 'answers today'))),
+    h('div', {class:'stack'},
+      h('button', {class:'primary', type:'button', onclick:function(){ startSession('mix'); }},
+        'Start a mixed round',
+        h('small', null, 'A bit of everything')),
+      review ? h('button', {class:'secondary', type:'button', onclick:function(){ startSession('review'); }},
+        'Review ' + review + ' missed ' + (review === 1 ? 'answer' : 'answers')) : null),
+    h('section', {class:'stack'},
+      h('h2', {class:'section-title'}, 'Or practice one thing'),
+      modeRow('verb', 'Verbs', ['Present tense: ', it('io sono, tu sei…')]),
+      modeRow('art', 'Articles', ['How to say “the”: ', it("il, lo, la, l', i, gli, le")]),
+      modeRow('sent', 'Sentences', ['Fill in the verb: ', it('Io ___ fame.')]),
+      modeRow('build', 'Word order', ['Build a sentence from tiles']),
+      modeRow('word', 'Words', ['Everyday vocabulary: ', it('grazie, oggi, la cena…')]),
+      itVoice ? modeRow('listen', 'Listening', ['Hear it, then pick what was said']) : null),
+    h('section', {class:'stack'},
+      h('div', {class:'linkrow'},
+        h('h2', {class:'section-title'}, 'Verbs in play: ' + nVerbs + ' of ' + VERBS.length),
+        h('span', null,
+          h('button', {class:'textbtn', type:'button', onclick:function(){ store.verbs = STARTER.slice(); save(); render(true); }}, 'First six'),
+          ' ',
+          h('button', {class:'textbtn', type:'button', onclick:function(){ store.verbs = VERBS.map(function(v){ return v.id; }); save(); render(true); }}, 'All'))),
+      h('div', {class:'chips'}, chips),
+      h('p', {class:'fine'}, 'Tap a verb to add or remove it. Start small and add more as they get easy.')),
+    h('section', {class:'stack'},
+      h('h2', {class:'section-title'}, 'How to answer'),
+      h('div', {class:'seg', role:'group', 'aria-label':'How to answer'},
+        segBtn('Tap the answer', false),
+        segBtn('Type the answer', true)),
+      h('p', {class:'fine'}, 'Typing is harder and teaches spelling. Articles are always tap.'))
+  ];
+}
+
+function promptLine(q, r){
+  const parts = r ? q.done : q.parts;
+  const gap = r ? h('span', {class:'filled'}, q.answer) : h('span', {class:'blank', role:'img', 'aria-label':'blank'});
+  return h('p', {class:'prompt it', lang:'it'}, parts.pre, gap, parts.post);
+}
+
+function viewPractice(s){
+  const q = s.q, r = s.result;
+  const typed = s.typing && (q.kind === 'verb' || q.kind === 'sent' || (q.kind === 'word' && !q.reverse));
+  const label = {verb:'Conjugate', art:'Choose the article', sent:'Complete the sentence',
+    word:q.reverse ? 'What does it mean?' : 'Say it in Italian',
+    listen:'Listen and choose', build:'Build the sentence'}[q.kind];
+
+  let body;
+  if (q.kind === 'word') {
+    body = [
+      h('div', {class:'promptrow'},
+        q.reverse ? h('p', {class:'prompt it', lang:'it'}, q.show) : h('p', {class:'prompt en'}, q.show),
+        q.reverse ? speakBtn(q.say) : null),
+      r ? h('div', {class:'promptrow'}, h('p', {class:'gloss'}, it(q.full), ' · ', q.en), q.reverse ? null : speakBtn(q.say)) : null
+    ];
+  } else if (q.kind === 'listen') {
+    if (r || !itVoice) {
+      body = [
+        h('div', {class:'promptrow'}, h('p', {class:'prompt it', lang:'it'}, q.full), speakBtn(q.say)),
+        r ? h('p', {class:'gloss'}, q.en) : h('p', {class:'gloss'}, 'No Italian voice on this device. Read it instead.')
+      ];
+    } else {
+      const play = h('button', {class:'play', type:'button', onclick:function(){ speak(q.say); }});
+      play.innerHTML = PLAY_SVG;
+      append(play, 'Play');
+      body = [play];
+    }
+  } else if (q.kind === 'build') {
+    body = [
+      h('p', {class:'prompt en'}, q.en),
+      r ? h('div', {class:'promptrow'}, h('p', {class:'gloss'}, it(q.full)), speakBtn(q.say)) : null
+    ];
+  } else {
+    body = [
+      q.inf ? h('p', {class:'hint'}, it(q.inf), ' · ', q.infEn) : null,
+      h('div', {class:'promptrow'}, promptLine(q, r), r ? speakBtn(q.say) : null),
+      h('p', {class:'gloss'}, q.en)
+    ];
+  }
+  const card = h('section', {class:'card'}, h('p', {class:'eyebrow'}, label), body);
+
+  let answerArea;
+  if (q.kind === 'build') {
+    const picked = s.pick || (s.pick = []);
+    answerArea = [
+      h('div', {class:'buildline' + (r ? (r.correct ? ' ok' : ' bad') : ''), role:'group', 'aria-label':'Your sentence'},
+        picked.length ? picked.map(function(ti, pos){
+          return h('button', {class:'tile', type:'button', lang:'it', disabled:!!r,
+            'aria-label':'Remove ' + q.tiles[ti],
+            onclick:function(){ s.pick.splice(pos, 1); render(true); }}, q.tiles[ti]);
+        }) : h('span', {class:'fine'}, 'Tap the words in order. Two of them are extra.')),
+      r ? null : h('div', {class:'bank', role:'group', 'aria-label':'Words'},
+        q.tiles.map(function(t, ti){
+          const used = picked.indexOf(ti) >= 0;
+          return h('button', {class:'tile' + (used ? ' used' : ''), type:'button', lang:'it', disabled:used,
+            onclick:function(){ s.pick.push(ti); render(true); }}, t);
+        })),
+      r ? null : h('button', {class:'primary', type:'button', id:'check-btn', disabled:!picked.length,
+        onclick:function(){ submit(s.pick.map(function(i){ return q.tiles[i]; }).join(' ')); }}, 'Check')
+    ];
+  } else if (!typed) {
+    answerArea = h('div', {class:'opts' + (q.kind === 'art' ? ' arts' : ''), role:'group', 'aria-label':'Answers'},
+      q.options.map(function(opt){
+        let cls = 'opt' + (q.reverse ? ' en' : (opt.length > 12 ? ' long' : ''));
+        if (r) {
+          if (opt === q.answer) cls += ' is-correct';
+          else if (opt === r.given) cls += ' is-wrong';
+          else cls += ' is-dim';
+        }
+        return h('button', {class:cls, type:'button', lang:q.reverse ? null : 'it', disabled:!!r,
+          onclick:function(){ submit(opt); }}, opt);
+      }));
+  } else {
+    const input = h('input', {id:'answer-input', name:'answer', type:'text', lang:'it',
+      autocomplete:'off', autocapitalize:'none', autocorrect:'off', spellcheck:'false',
+      enterkeyhint:'done', placeholder:q.kind === 'word' ? 'Type it in Italian' : 'Type the verb', disabled:!!r,
+      class:r ? (r.correct ? 'ok' : 'bad') : null});
+    if (r) input.value = r.given;
+    const accents = ['à','è','é','ì','ò','ù'].map(function(ch){
+      return h('button', {type:'button', lang:'it', 'aria-label':'Insert ' + ch, disabled:!!r,
+        onclick:function(){
+          const a = input.selectionStart === null ? input.value.length : input.selectionStart;
+          const z = input.selectionEnd === null ? a : input.selectionEnd;
+          input.value = input.value.slice(0, a) + ch + input.value.slice(z);
+          input.focus();
+          try { input.setSelectionRange(a + 1, a + 1); } catch (e) { /* ignore */ }
+        }}, ch);
+    });
+    answerArea = h('form', {class:'typeform', novalidate:true,
+      onsubmit:function(e){
+        e.preventDefault();
+        if (!input.value.trim()) { input.focus(); return; }
+        submit(input.value);
+      }},
+      h('label', {class:'sr', for:'answer-input'}, 'Your answer'),
+      input,
+      h('div', {class:'accents', role:'group', 'aria-label':'Accented letters'}, accents),
+      r ? null : h('button', {class:'primary', type:'submit', id:'check-btn'}, 'Check'));
+  }
+
+  const out = [card, answerArea];
+  if (r) {
+    const fb = h('div', {class:'fb ' + (r.correct ? 'ok' : 'bad'), role:'status'});
+    append(fb, h('p', {class:'fb-head'},
+      it(r.correct ? 'Giusto!' : 'Non proprio.'), ' ',
+      h('span', {class:'fb-en'}, r.correct ? 'Correct' : 'Not quite')));
+    if (!r.correct) {
+      append(fb, h('p', null, 'Answer: ',
+        q.reverse ? h('strong', null, q.answer) : h('strong', {class:'it', lang:'it'}, q.full)));
+      if (typed && r.given) append(fb, h('p', null, 'You wrote: ', it(r.given)));
+    }
+    if (r.slip) append(fb, h('p', null, 'Watch the accent. It is written ', h('strong', {class:'it', lang:'it'}, q.answer), '.'));
+    if (q.why) append(fb, h('p', null, q.why));
+    if (q.sg) append(fb, h('p', null, 'Singular: ', it(q.sg)));
+    if (q.note) append(fb, h('p', null, q.note));
+    if (q.tip && !q.note && (!r.correct || r.slip)) append(fb, h('p', null, q.tip));
+    out.push(fb);
+    out.push(h('button', {class:'primary', type:'button', id:'next-btn', onclick:advance},
+      s.idx + 1 >= s.total ? 'See results' : 'Next'));
+  }
+  return out;
+}
+
+function viewResults(s){
+  const ratio = s.total ? s.score / s.total : 0;
+  const cheer = ratio >= 0.9 ? ['Bravissima!', 'Excellent!']
+    : ratio >= 0.7 ? ['Brava!', 'Well done!']
+    : ratio >= 0.5 ? ['Non male!', 'Not bad!']
+    : ['Coraggio!', 'Keep going!'];
+  const again = s.mode === 'review' && !reviewIds().length ? 'mix' : s.mode;
+  return [
+    h('section', {class:'hero'},
+      h('p', {class:'score'}, String(s.score), h('small', null, ' / ' + s.total)),
+      h('p', {class:'cheer', lang:'it'}, cheer[0]),
+      h('p', null, cheer[1] + (s.misses.length ? ' The ones you missed are saved for review.' : ' Nothing to review from this round.'))),
+    s.misses.length ? h('section', {class:'stack'},
+      h('h2', {class:'section-title'}, 'Look at these again'),
+      h('ul', {class:'misses'}, s.misses.map(function(m){
+        return h('li', null, it(m.full), speakBtn(m.say), h('span', {class:'en'}, m.en));
+      }))) : null,
+    h('div', {class:'stack'},
+      h('button', {class:'primary', type:'button', onclick:function(){ startSession(again); }}, 'Another round'),
+      h('button', {class:'secondary', type:'button', onclick:quit}, 'Back to start'))
+  ];
+}
+
+function artCell(art, noun){
+  return h('td', {class:'it', lang:'it'}, h('b', null, art), (art === "l'" ? '' : ' ') + noun);
+}
+function refArticles(){
+  const rows = [
+    ['Masculine, most consonants', ['il','libro'], ['i','libri']],
+    ['Masculine, s + consonant, z, gn, y', ['lo','studente'], ['gli','studenti']],
+    ['Masculine, vowel', ["l'",'amico'], ['gli','amici']],
+    ['Feminine, consonant', ['la','casa'], ['le','case']],
+    ['Feminine, vowel', ["l'",'amica'], ['le','amiche']]
+  ];
+  return h('section', {class:'ref'},
+    h('h2', null, 'Seven ways to say “the”'),
+    h('p', {class:'fine'}, 'The article depends on the noun’s gender, its number, and the sound it starts with.'),
+    h('div', {class:'scroll'},
+      h('table', null,
+        h('thead', null, h('tr', null, h('th', {scope:'col'}, 'The noun is'), h('th', {scope:'col'}, 'One'), h('th', {scope:'col'}, 'Many'))),
+        h('tbody', null, rows.map(function(r){
+          return h('tr', null, h('th', {scope:'row'}, r[0]), artCell(r[1][0], r[1][1]), artCell(r[2][0], r[2][1]));
+        })))),
+    h('p', {class:'fine'}, 'Most nouns ending in -o are masculine and most ending in -a are feminine. Nouns ending in -e can be either, so learn them with their article: ', it('il cane'), ', ', it('la notte'), '.'));
+}
+function refVerbs(){
+  const ends = [
+    ['io','-o','-o','-o'], ['tu','-i','-i','-i'], ['lui / lei','-a','-e','-e'],
+    ['noi','-iamo','-iamo','-iamo'], ['voi','-ate','-ete','-ite'], ['loro','-ano','-ono','-ono']
+  ];
+  return h('section', {class:'ref'},
+    h('h2', null, 'Present tense'),
+    h('p', {class:'fine'}, 'Regular verbs drop -are, -ere or -ire and add these endings. Italian usually leaves out the pronoun, because the ending already says who.'),
+    h('div', {class:'scroll'},
+      h('table', null,
+        h('thead', null, h('tr', null, h('th', {scope:'col'}, ''), h('th', {scope:'col', lang:'it'}, '-are'), h('th', {scope:'col', lang:'it'}, '-ere'), h('th', {scope:'col', lang:'it'}, '-ire'))),
+        h('tbody', null, ends.map(function(r){
+          return h('tr', null, h('th', {scope:'row', lang:'it'}, r[0]),
+            h('td', {class:'it', lang:'it'}, h('b', null, r[1])),
+            h('td', {class:'it', lang:'it'}, h('b', null, r[2])),
+            h('td', {class:'it', lang:'it'}, h('b', null, r[3])));
+        })))),
+    VERBS.map(function(v){
+      const forms = h('div', {class:'forms'});
+      v.forms.forEach(function(f, p){
+        append(forms, h('span', {class:'pr', lang:'it'}, PRON[p].it));
+        append(forms, h('span', {class:'fm'}, h('span', {lang:'it'}, f), h('small', null, verbGloss(v, p))));
+        append(forms, h('span', {class:'ph'}, speakBtn((PRON[p].say || PRON[p].it) + ' ' + f)));
+      });
+      return h('details', null,
+        h('summary', null, it(v.id), h('span', {class:'en'}, v.en),
+          h('span', {class:'tag'}, v.reg ? 'regular' : 'irregular')),
+        forms,
+        h('p', {class:'tip'}, v.tip));
+    }));
+}
+function refSounds(){
+  const items = [
+    [['c', ' before e or i sounds like “ch” in “cheese”'], 'ciao, cena', 'hi, dinner'],
+    [['c', ' before a, o or u sounds like “k”'], 'casa, come', 'house, how'],
+    [['ch', ' always sounds like “k”'], 'che, chiave', 'what, key'],
+    [['g', ' before e or i sounds like “j” in “gym”'], 'gelato, giorno', 'ice cream, day'],
+    [['gh', ' always sounds like “g” in “go”'], 'spaghetti', 'spaghetti'],
+    [['gn', ' sounds like “ny” in “canyon”'], 'gnocchi, bagno', 'gnocchi, bathroom'],
+    [['gli', ' sounds like “lli” in “million”'], 'famiglia, gli', 'family, the'],
+    [['sc', ' before e or i sounds like “sh”'], 'pesce, capisci', 'fish, you understand'],
+    [['sc', ' before a, o or u sounds like “sk”'], 'scuola, capisco', 'school, I understand'],
+    [['h', ' is always silent'], 'ho, hanno', 'I have, they have'],
+    [['Double letters', ' are held longer'], 'nono, nonno', 'ninth, grandfather']
+  ];
+  return h('section', {class:'ref'},
+    h('h2', null, 'Sounds to watch'),
+    h('p', {class:'fine'}, 'Italian is read as it is written. These are the spellings that trip up English speakers.'),
+    h('ul', {class:'sounds'}, items.map(function(x){
+      return h('li', null,
+        h('span', {class:'rule'}, h('b', {lang:'it'}, x[0][0]), x[0][1]),
+        speakBtn(x[1]),
+        h('span', {class:'ex'}, h('span', {class:'it', lang:'it', style:{fontSize:'20px', color:'var(--ink)', fontFamily:'var(--font-it)'}}, x[1]), ' ', h('span', null, x[2])));
+    })));
+}
+function viewRef(){
+  function segBtn(id, label){
+    return h('button', {type:'button', 'aria-pressed':state.refTab === id ? 'true' : 'false',
+      onclick:function(){ state.refTab = id; render(); }}, label);
+  }
+  const body = state.refTab === 'verbs' ? refVerbs() : state.refTab === 'sounds' ? refSounds() : refArticles();
+  return [
+    h('div', {class:'seg', role:'group', 'aria-label':'Reference section'},
+      segBtn('articles', 'Articles'), segBtn('verbs', 'Verbs'), segBtn('sounds', 'Sounds')),
+    body
+  ];
+}
+
+/* ---------- render ---------- */
+function renderTop(){
+  const s = state.session;
+  $top.replaceChildren();
+  if (s && !s.done) {
+    const bar = h('div', {class:'bar', role:'img', 'aria-label':'Question ' + (s.idx + 1) + ' of ' + s.total});
+    for (let i = 0; i < s.total; i++) {
+      let cls = '';
+      if (i < s.log.length) cls = s.log[i] ? 'ok' : 'bad';
+      else if (i === s.idx) cls = 'now';
+      append(bar, h('i', {class:cls || null}));
+    }
+    append($top, [
+      h('button', {class:'quit', type:'button', 'aria-label':'Quit this round', onclick:quit}, '✕'),
+      bar,
+      h('span', {class:'count'}, (s.idx + 1) + ' / ' + s.total)
+    ]);
+  } else {
+    append($top, h('span', {class:'wordmark', lang:'it'}, 'Italiano ', h('b', null, 'per Rachel')));
+  }
+}
+function render(keepScroll){
+  const s = state.session;
+  const y = $main.scrollTop;
+  renderTop();
+  $tabs.hidden = !!s;
+  if (state.tab === 'ref') { $tabRef.setAttribute('aria-current', 'page'); $tabHome.removeAttribute('aria-current'); }
+  else { $tabHome.setAttribute('aria-current', 'page'); $tabRef.removeAttribute('aria-current'); }
+  let view;
+  if (s) view = s.done ? viewResults(s) : viewPractice(s);
+  else view = state.tab === 'ref' ? viewRef() : viewHome();
+  $main.replaceChildren();
+  append($main, view);
+  $main.scrollTop = keepScroll ? y : 0;
+  if (s && !s.done && !s.result && s.typing) {
+    const input = document.getElementById('answer-input');
+    if (input) { try { input.focus({preventScroll:true}); } catch (e) { input.focus(); } }
+  }
+}
+
+$tabHome.addEventListener('click', function(){ state.tab = 'home'; render(); });
+$tabRef.addEventListener('click', function(){ state.tab = 'ref'; render(); });
+
+/* ---------- boot ---------- */
+function validSession(s){
+  if (!s || typeof s !== 'object' || typeof s.idx !== 'number' || typeof s.total !== 'number') return false;
+  if (!Array.isArray(s.log) || !Array.isArray(s.misses) || !Array.isArray(s.recent) || !Array.isArray(s.requeue)) return false;
+  if (s.done) return true;
+  const q = s.q;
+  if (!(q && ITEM_BY_ID[q.id] && Array.isArray(q.options) && q.parts && q.done && typeof q.answer === 'string')) return false;
+  if (q.kind === 'build' && !Array.isArray(q.tiles)) return false;
+  if (!Array.isArray(s.pick)) s.pick = [];
+  return true;
+}
+function start(data){
+  load();
+  if (data && typeof data === 'object') {
+    if (data.tab === 'ref' || data.tab === 'home') state.tab = data.tab;
+    if (data.refTab === 'verbs' || data.refTab === 'sounds' || data.refTab === 'articles') state.refTab = data.refTab;
+    if (validSession(data.session)) state.session = data.session;
+  }
+  if ('speechSynthesis' in window && typeof window.SpeechSynthesisUtterance === 'function') {
+    refreshVoices();
+    try { window.speechSynthesis.addEventListener('voiceschanged', refreshVoices); } catch (e) { /* ignore */ }
+  }
+  booted = true;
+  render();
+}
+const hot = window.claude && window.claude.hot;
+if (hot && typeof hot.snapshot === 'function') {
+  try {
+    hot.snapshot(function(){ return {tab:state.tab, refTab:state.refTab, session:state.session}; });
+  } catch (e) { /* ignore */ }
+}
+if (hot && typeof hot.ready === 'function') hot.ready(start);
+else start((hot && hot.data) || {});
+})();
+</script>
+</body>
+</html>
